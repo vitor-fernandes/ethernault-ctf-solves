@@ -41,5 +41,4 @@ contract Test05 is Test {
         assertEq(newOwner, user);
     }
 
-
 }
