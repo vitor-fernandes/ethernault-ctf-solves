@@ -11,8 +11,7 @@ contract Test01 is Test {
     Instance instance;
 
     function setUp() public {
-        // Change the 0x1 to your contract address
-        instance = Instance(address(0x1));
+        instance = new Instance("Sup3rS3cr3tP455W0rd@@");
     }
 
     function testSolve() public {
