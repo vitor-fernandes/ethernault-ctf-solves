@@ -1,5 +1,5 @@
 # ethernault-ctf-solves
-This repository contains some codes wrote in Foundry Framework to solve the challenges to Ethernault CTF
+This repository contains some codes wrote in Foundry Framework to solve the challenges of Ethernault CTF
 
 Before starting to run the tests, it's necessary to install the dependencies:
 ```
